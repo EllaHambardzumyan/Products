@@ -1,24 +1,34 @@
-import logo from './logo.svg';
+import React, { useEffect,useState }  from 'react'
+import ProductBox from './components/ProductBox/ProductBox'
 import './App.css';
 
 function App() {
+   const [products,setProducts] = useState([])
+
+  const getProducts = async () =>{
+    await fetch('https://dummyjson.com/products')
+    .then((res)=> res.json())
+    .then((data)=> setProducts(data.products))
+  }
+  console.log(products);
+
+  useEffect(()=>{
+    getProducts()
+  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+     <div className='App'>
+      <div className='page_title'>
+        <h2>Products</h2>
+      </div>
+      <div className='display_products'>
+        {
+          products.map((product)=>{
+            return <ProductBox key={product.id} product ={product}/>
+          })
+        }
+      </div>
+     </div>
   );
 }
 
